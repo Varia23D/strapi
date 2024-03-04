@@ -362,104 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiBookBook extends Schema.CollectionType {
-  collectionName: 'books';
-  info: {
-    singularName: 'book';
-    pluralName: 'books';
-    displayName: 'Book';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Title: Attribute.String;
-    Author: Attribute.String;
-    Status: Attribute.Boolean;
-    Cover: Attribute.Media;
-    users_permissions_user: Attribute.Relation<
-      'api::book.book',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiFilmFilm extends Schema.CollectionType {
-  collectionName: 'films';
-  info: {
-    singularName: 'film';
-    pluralName: 'films';
-    displayName: 'film';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    author: Attribute.String;
-    published: Attribute.Date;
-    cover: Attribute.Media;
-    plot: Attribute.Text;
-    reviews: Attribute.Relation<
-      'api::film.film',
-      'oneToMany',
-      'api::review.review'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::film.film', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::film.film', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiReviewReview extends Schema.CollectionType {
-  collectionName: 'reviews';
-  info: {
-    singularName: 'review';
-    pluralName: 'reviews';
-    displayName: 'review';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    review: Attribute.Text;
-    author: Attribute.String;
-    film: Attribute.Relation<
-      'api::review.review',
-      'manyToOne',
-      'api::film.film'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::review.review',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::review.review',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -681,6 +583,53 @@ export interface PluginContentReleasesReleaseAction
   };
 }
 
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+          max: 50;
+        },
+        number
+      >;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUsersPermissionsPermission
   extends Schema.CollectionType {
   collectionName: 'up_permissions';
@@ -815,10 +764,15 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    books: Attribute.Relation<
+    test_posts: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
-      'api::book.book'
+      'api::test-post.test-post'
+    >;
+    transactions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::transaction.transaction'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -837,46 +791,166 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
+export interface ApiBookCopyBookCopy extends Schema.CollectionType {
+  collectionName: 'book_copies';
   info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
+    singularName: 'book-copy';
+    pluralName: 'book-copies';
+    displayName: 'Book copy';
   };
   options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
+    draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
-    code: Attribute.String & Attribute.Unique;
+    book: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'manyToOne',
+      'api::book-type.book-type'
+    >;
+    taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
+    transaction: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToMany',
+      'api::test-post.test-post'
+    >;
+    transactions: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToMany',
+      'api::transaction.transaction'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::book-copy.book-copy',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::book-copy.book-copy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBookTypeBookType extends Schema.CollectionType {
+  collectionName: 'book_types';
+  info: {
+    singularName: 'book-type';
+    pluralName: 'book-types';
+    displayName: 'book type';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.String;
+    cover: Attribute.Media;
+    copy: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToMany',
+      'api::book-copy.book-copy'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTestPostTestPost extends Schema.CollectionType {
+  collectionName: 'test_posts';
+  info: {
+    singularName: 'test-post';
+    pluralName: 'test-posts';
+    displayName: 'TestPost';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.String;
+    user: Attribute.Relation<
+      'api::test-post.test-post',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    book: Attribute.Relation<
+      'api::test-post.test-post',
+      'manyToOne',
+      'api::book-copy.book-copy'
+    >;
+    loanDate: Attribute.Date;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::test-post.test-post',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::test-post.test-post',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTransactionTransaction extends Schema.CollectionType {
+  collectionName: 'transactions';
+  info: {
+    singularName: 'transaction';
+    pluralName: 'transactions';
+    displayName: 'Transaction';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    book: Attribute.Relation<
+      'api::transaction.transaction',
+      'manyToOne',
+      'api::book-copy.book-copy'
+    >;
+    user: Attribute.Relation<
+      'api::transaction.transaction',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    returnDate: Attribute.Date;
+    open: Attribute.Boolean & Attribute.DefaultTo<true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::transaction.transaction',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::transaction.transaction',
       'oneToOne',
       'admin::user'
     > &
@@ -894,17 +968,18 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::book.book': ApiBookBook;
-      'api::film.film': ApiFilmFilm;
-      'api::review.review': ApiReviewReview;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
+      'api::book-copy.book-copy': ApiBookCopyBookCopy;
+      'api::book-type.book-type': ApiBookTypeBookType;
+      'api::test-post.test-post': ApiTestPostTestPost;
+      'api::transaction.transaction': ApiTransactionTransaction;
     }
   }
 }

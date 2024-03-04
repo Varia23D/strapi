@@ -66,11 +66,17 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "books": {
+    "test_posts": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::book.book",
-      "mappedBy": "users_permissions_user"
+      "target": "api::test-post.test-post",
+      "mappedBy": "user"
+    },
+    "transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction.transaction",
+      "mappedBy": "user"
     }
   }
 }

@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "book_types",
+  "info": {
+    "singularName": "book-type",
+    "pluralName": "book-types",
+    "displayName": "book type"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cover": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "copy": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::book-copy.book-copy",
+      "mappedBy": "book"
+    }
+  }
+}
