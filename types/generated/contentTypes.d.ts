@@ -797,6 +797,7 @@ export interface ApiBookCopyBookCopy extends Schema.CollectionType {
     singularName: 'book-copy';
     pluralName: 'book-copies';
     displayName: 'Book copy';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -808,11 +809,6 @@ export interface ApiBookCopyBookCopy extends Schema.CollectionType {
       'api::book-type.book-type'
     >;
     taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
-    transaction: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'oneToMany',
-      'api::test-post.test-post'
-    >;
     transactions: Attribute.Relation<
       'api::book-copy.book-copy',
       'oneToMany',
@@ -891,11 +887,6 @@ export interface ApiTestPostTestPost extends Schema.CollectionType {
       'api::test-post.test-post',
       'manyToOne',
       'plugin::users-permissions.user'
-    >;
-    book: Attribute.Relation<
-      'api::test-post.test-post',
-      'manyToOne',
-      'api::book-copy.book-copy'
     >;
     loanDate: Attribute.Date;
     createdAt: Attribute.DateTime;

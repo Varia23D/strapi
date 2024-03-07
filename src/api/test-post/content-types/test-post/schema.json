@@ -24,12 +24,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "test_posts"
     },
-    "book": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::book-copy.book-copy",
-      "inversedBy": "transaction"
-    },
     "loanDate": {
       "type": "date"
     }

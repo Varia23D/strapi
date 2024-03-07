@@ -4,7 +4,8 @@
   "info": {
     "singularName": "book-copy",
     "pluralName": "book-copies",
-    "displayName": "Book copy"
+    "displayName": "Book copy",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -21,12 +22,6 @@
       "type": "boolean",
       "default": false,
       "required": true
-    },
-    "transaction": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::test-post.test-post",
-      "mappedBy": "book"
     },
     "transactions": {
       "type": "relation",
