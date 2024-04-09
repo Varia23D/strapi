@@ -4,7 +4,8 @@
   "info": {
     "singularName": "book-type",
     "pluralName": "book-types",
-    "displayName": "book type"
+    "displayName": "book type",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,20 +19,21 @@
       "type": "string"
     },
     "cover": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
-    "copy": {
+    "copies": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::book-copy.book-copy",
-      "mappedBy": "book"
+      "mappedBy": "book_type"
     }
   }
 }
