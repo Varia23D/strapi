@@ -24,12 +24,12 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "transactions"
     },
-    "returnDate": {
-      "type": "date"
-    },
     "open": {
       "type": "boolean",
       "default": true
+    },
+    "return_date": {
+      "type": "date"
     }
   }
 }
