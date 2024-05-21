@@ -374,16 +374,16 @@ export interface ApiBookCopyBookCopy extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    book: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'manyToOne',
-      'api::book-type.book-type'
-    >;
     taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
     transactions: Attribute.Relation<
       'api::book-copy.book-copy',
       'oneToMany',
       'api::transaction.transaction'
+    >;
+    book_type: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'manyToOne',
+      'api::book-type.book-type'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -418,12 +418,12 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
     title: Attribute.String;
     description: Attribute.String;
     cover: Attribute.Media;
-    copy: Attribute.Relation<
+    copies: Attribute.Relation<
       'api::book-type.book-type',
       'oneToMany',
       'api::book-copy.book-copy'
     >;
-    loan_period: Attribute.Integer & Attribute.DefaultTo<30>;
+    loanPeriod: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -502,8 +502,8 @@ export interface ApiTransactionTransaction extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    returnDate: Attribute.Date;
     open: Attribute.Boolean & Attribute.DefaultTo<true>;
-    return_date: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

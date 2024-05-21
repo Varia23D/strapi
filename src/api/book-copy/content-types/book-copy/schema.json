@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "book": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::book-type.book-type",
-      "inversedBy": "copy"
-    },
     "taken": {
       "type": "boolean",
       "default": false,
@@ -28,6 +22,12 @@
       "relation": "oneToMany",
       "target": "api::transaction.transaction",
       "mappedBy": "book"
+    },
+    "book_type": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::book-type.book-type",
+      "inversedBy": "copies"
     }
   }
 }

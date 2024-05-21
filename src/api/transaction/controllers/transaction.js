@@ -15,7 +15,6 @@ module.exports = createCoreController('api::transaction.transaction',
       if (!user) {
         return ctx.unauthorized("You are not authorized!");
       }
-      console.log('userdata', ctx.state.user);
       const { book } = ctx.request.body.data;
       
       try {
@@ -25,6 +24,7 @@ module.exports = createCoreController('api::transaction.transaction',
             book, //book id
             open, // transaction status on create set to open
             publishedAt, // date of creation
+            returnDate: ctx.request.body.data.returnDate, // date of return
           },
         });
         

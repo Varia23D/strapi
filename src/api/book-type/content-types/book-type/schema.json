@@ -29,15 +29,14 @@
         "audios"
       ]
     },
-    "copy": {
+    "copies": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::book-copy.book-copy",
-      "mappedBy": "book"
+      "mappedBy": "book_type"
     },
-    "loan_period": {
-      "type": "integer",
-      "default": 30
+    "loanPeriod": {
+      "type": "integer"
     }
   }
 }
