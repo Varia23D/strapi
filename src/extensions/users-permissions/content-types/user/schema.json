@@ -26,6 +26,11 @@
       "configurable": false,
       "required": true
     },
+    "phone": {
+      "type": "biginteger",
+      "required": false,
+      "unique": true
+    },
     "provider": {
       "type": "string",
       "configurable": false

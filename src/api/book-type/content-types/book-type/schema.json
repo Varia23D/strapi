@@ -4,7 +4,8 @@
   "info": {
     "singularName": "book-type",
     "pluralName": "book-types",
-    "displayName": "book type"
+    "displayName": "Book type",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,23 +16,59 @@
       "type": "string"
     },
     "description": {
-      "type": "string"
+      "type": "text"
+    },
+    "copies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::book-copy.book-copy",
+      "mappedBy": "book_type"
     },
     "cover": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
-    "copy": {
+    "loanPeriod": {
+      "type": "decimal"
+    },
+    "createdAt": {
+      "type": "datetime"
+    },
+    "updatedAt": {
+      "type": "datetime"
+    },
+    "publishedAt": {
+      "type": "datetime",
+      "configurable": false,
+      "writable": true,
+      "visible": false
+    },
+    "createdBy": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::book-copy.book-copy",
-      "mappedBy": "book"
+      "relation": "oneToOne",
+      "target": "admin::user",
+      "configurable": false,
+      "writable": false,
+      "visible": false,
+      "useJoinTable": false,
+      "private": true
+    },
+    "updatedBy": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user",
+      "configurable": false,
+      "writable": false,
+      "visible": false,
+      "useJoinTable": false,
+      "private": true
     }
   }
 }
