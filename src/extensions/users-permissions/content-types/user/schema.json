@@ -27,7 +27,7 @@
       "required": true
     },
     "phone": {
-      "type": "biginteger",
+      "type": "string",
       "required": false,
       "unique": true
     },

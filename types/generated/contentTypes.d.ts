@@ -702,7 +702,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    phone: Attribute.BigInteger & Attribute.Unique;
+    phone: Attribute.String & Attribute.Unique;
     provider: Attribute.String;
     password: Attribute.Password &
       Attribute.Private &
