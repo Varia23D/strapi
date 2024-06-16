@@ -362,6 +362,166 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiBookCopyBookCopy extends Schema.CollectionType {
+  collectionName: 'book_copies';
+  info: {
+    singularName: 'book-copy';
+    pluralName: 'book-copies';
+    displayName: 'Book copy';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
+    transactions: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToMany',
+      'api::transaction.transaction'
+    >;
+    book_type: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'manyToOne',
+      'api::book-type.book-type'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBookTypeBookType extends Schema.CollectionType {
+  collectionName: 'book_types';
+  info: {
+    singularName: 'book-type';
+    pluralName: 'book-types';
+    displayName: 'book type';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.String;
+    copies: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToMany',
+      'api::book-copy.book-copy'
+    >;
+    cover: Attribute.Media;
+    loanPeriod: Attribute.Decimal;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::book-type.book-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTestPostTestPost extends Schema.CollectionType {
+  collectionName: 'test_posts';
+  info: {
+    singularName: 'test-post';
+    pluralName: 'test-posts';
+    displayName: 'TestPost';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.String;
+    user: Attribute.Relation<
+      'api::test-post.test-post',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    loanDate: Attribute.Date;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::test-post.test-post',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::test-post.test-post',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTransactionTransaction extends Schema.CollectionType {
+  collectionName: 'transactions';
+  info: {
+    singularName: 'transaction';
+    pluralName: 'transactions';
+    displayName: 'Transaction';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    book: Attribute.Relation<
+      'api::transaction.transaction',
+      'manyToOne',
+      'api::book-copy.book-copy'
+    >;
+    user: Attribute.Relation<
+      'api::transaction.transaction',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    returnDate: Attribute.Date;
+    open: Attribute.Boolean & Attribute.DefaultTo<true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::transaction.transaction',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::transaction.transaction',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -791,166 +951,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface ApiBookCopyBookCopy extends Schema.CollectionType {
-  collectionName: 'book_copies';
-  info: {
-    singularName: 'book-copy';
-    pluralName: 'book-copies';
-    displayName: 'Book copy';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
-    transactions: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'oneToMany',
-      'api::transaction.transaction'
-    >;
-    book_type: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'manyToOne',
-      'api::book-type.book-type'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiBookTypeBookType extends Schema.CollectionType {
-  collectionName: 'book_types';
-  info: {
-    singularName: 'book-type';
-    pluralName: 'book-types';
-    displayName: 'book type';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    description: Attribute.String;
-    copies: Attribute.Relation<
-      'api::book-type.book-type',
-      'oneToMany',
-      'api::book-copy.book-copy'
-    >;
-    cover: Attribute.Media;
-    loanPeriod: Attribute.Decimal;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::book-type.book-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::book-type.book-type',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTestPostTestPost extends Schema.CollectionType {
-  collectionName: 'test_posts';
-  info: {
-    singularName: 'test-post';
-    pluralName: 'test-posts';
-    displayName: 'TestPost';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    description: Attribute.String;
-    user: Attribute.Relation<
-      'api::test-post.test-post',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    loanDate: Attribute.Date;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::test-post.test-post',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::test-post.test-post',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTransactionTransaction extends Schema.CollectionType {
-  collectionName: 'transactions';
-  info: {
-    singularName: 'transaction';
-    pluralName: 'transactions';
-    displayName: 'Transaction';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    book: Attribute.Relation<
-      'api::transaction.transaction',
-      'manyToOne',
-      'api::book-copy.book-copy'
-    >;
-    user: Attribute.Relation<
-      'api::transaction.transaction',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    returnDate: Attribute.Date;
-    open: Attribute.Boolean & Attribute.DefaultTo<true>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::transaction.transaction',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::transaction.transaction',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -961,6 +961,10 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::book-copy.book-copy': ApiBookCopyBookCopy;
+      'api::book-type.book-type': ApiBookTypeBookType;
+      'api::test-post.test-post': ApiTestPostTestPost;
+      'api::transaction.transaction': ApiTransactionTransaction;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -969,10 +973,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::book-copy.book-copy': ApiBookCopyBookCopy;
-      'api::book-type.book-type': ApiBookTypeBookType;
-      'api::test-post.test-post': ApiTestPostTestPost;
-      'api::transaction.transaction': ApiTransactionTransaction;
     }
   }
 }

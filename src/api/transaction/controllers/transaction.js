@@ -12,15 +12,29 @@ module.exports = createCoreController('api::transaction.transaction',
       const user = ctx.state.user;
       const publishedAt = new Date();
       const returnDate = new Date(publishedAt);
-      returnDate.setMonth(returnDate.getMonth() + 1) //returnDate for the book autoset by 1 month
       const open = true // default value of created transaction
       if (!user) {
         return ctx.unauthorized("You are not authorized!");
       }
-      console.log('userdata', ctx.state.user);
       const { book } = ctx.request.body.data;
       
       try {
+        //fetch info about book type to get loan period info
+        const bookCopy = await strapi.entityService.findOne('api::book-copy.book-copy', book, {
+          populate: { book_type: true }
+        });
+
+        if (!bookCopy || !bookCopy.book_type || !bookCopy.book_type.id) {
+          return ctx.badRequest("Invalid book ID or book type not found!");
+        }
+
+        let loanPeriod = bookCopy.book_type.loanPeriod
+        if (loanPeriod ===null || loanPeriod === undefined) {
+          loanPeriod = 1; //default loan period if missed (months)
+        }
+
+        returnDate.setMonth(returnDate.getMonth() + loanPeriod)
+
         const transaction = await strapi.service('api::transaction.transaction').create({
           data: {
             user: ctx.state.user.id, //who did the transaction
