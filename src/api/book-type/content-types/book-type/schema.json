@@ -35,8 +35,11 @@
         "audios"
       ]
     },
-    "loanPeriod": {
-      "type": "decimal"
+    "copy": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::book-copy.book-copy",
+      "mappedBy": "book"
     }
   }
 }
