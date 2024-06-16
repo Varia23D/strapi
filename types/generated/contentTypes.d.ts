@@ -735,7 +735,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -774,6 +773,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::transaction.transaction'
     >;
+    phone: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -803,16 +803,16 @@ export interface ApiBookCopyBookCopy extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    book: Attribute.Relation<
-      'api::book-copy.book-copy',
-      'manyToOne',
-      'api::book-type.book-type'
-    >;
     taken: Attribute.Boolean & Attribute.Required & Attribute.DefaultTo<false>;
     transactions: Attribute.Relation<
       'api::book-copy.book-copy',
       'oneToMany',
       'api::transaction.transaction'
+    >;
+    book_type: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'manyToOne',
+      'api::book-type.book-type'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -838,6 +838,7 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
     singularName: 'book-type';
     pluralName: 'book-types';
     displayName: 'book type';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -845,12 +846,13 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
   attributes: {
     title: Attribute.String;
     description: Attribute.String;
-    cover: Attribute.Media;
-    copy: Attribute.Relation<
+    copies: Attribute.Relation<
       'api::book-type.book-type',
       'oneToMany',
       'api::book-copy.book-copy'
     >;
+    cover: Attribute.Media;
+    loanPeriod: Attribute.Decimal;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
