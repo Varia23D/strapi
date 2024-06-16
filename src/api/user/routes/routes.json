@@ -1,0 +1,12 @@
+{
+	"routes": [
+	  {
+		"method": "PUT",
+		"path": "/users/me",
+		"handler": "custom-user-controller.updateMe",
+		"config": {
+		  "middlewares": ["global::isAuthenticated"]
+		}
+	  }
+	]
+  }
