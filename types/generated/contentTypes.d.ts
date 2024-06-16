@@ -701,7 +701,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    phone: Attribute.String & Attribute.Unique;
+    phone: Attribute.BigInteger;
     provider: Attribute.String;
     password: Attribute.Password &
       Attribute.Private &
@@ -727,7 +727,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::transaction.transaction'
     >;
-    phone: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
