@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -25,6 +24,11 @@
       "minLength": 6,
       "configurable": false,
       "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": false,
+      "unique": true
     },
     "provider": {
       "type": "string",
