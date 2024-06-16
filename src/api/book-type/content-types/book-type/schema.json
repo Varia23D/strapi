@@ -18,12 +18,6 @@
     "description": {
       "type": "string"
     },
-    "copies": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::book-copy.book-copy",
-      "mappedBy": "book_type"
-    },
     "cover": {
       "type": "media",
       "multiple": true,
@@ -35,11 +29,14 @@
         "audios"
       ]
     },
-    "copy": {
+    "copies": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::book-copy.book-copy",
-      "mappedBy": "book"
+      "mappedBy": "book_type"
+    },
+    "loanPeriod": {
+      "type": "integer"
     }
   }
 }
