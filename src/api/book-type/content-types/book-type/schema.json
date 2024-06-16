@@ -24,7 +24,22 @@
       "target": "api::book-copy.book-copy",
       "mappedBy": "book_type"
     },
+    "copies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::book-copy.book-copy",
+      "mappedBy": "book_type"
+    },
+    "copies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::book-copy.book-copy",
+      "mappedBy": "book_type"
+    },
     "cover": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "type": "media",
       "multiple": true,
       "required": false,

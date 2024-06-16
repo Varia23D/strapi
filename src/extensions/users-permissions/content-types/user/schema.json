@@ -25,6 +25,11 @@
       "configurable": false,
       "required": true
     },
+    "phone": {
+      "type": "string",
+      "required": false,
+      "unique": true
+    },
     "provider": {
       "type": "string",
       "configurable": false
@@ -76,9 +81,6 @@
       "relation": "oneToMany",
       "target": "api::transaction.transaction",
       "mappedBy": "user"
-    },
-    "phone": {
-      "type": "biginteger"
     }
   }
 }
