@@ -814,6 +814,11 @@ export interface ApiBookCopyBookCopy extends Schema.CollectionType {
       'manyToOne',
       'api::book-type.book-type'
     >;
+    contacts: Attribute.Relation<
+      'api::book-copy.book-copy',
+      'oneToMany',
+      'api::contact.contact'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -864,6 +869,45 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::book-type.book-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiContactContact extends Schema.CollectionType {
+  collectionName: 'contacts';
+  info: {
+    singularName: 'contact';
+    pluralName: 'contacts';
+    displayName: 'Contact';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    book_copy: Attribute.Relation<
+      'api::contact.contact',
+      'manyToOne',
+      'api::book-copy.book-copy'
+    >;
+    user: Attribute.Relation<
+      'api::contact.contact',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::contact.contact',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::contact.contact',
       'oneToOne',
       'admin::user'
     > &
@@ -971,6 +1015,7 @@ declare module '@strapi/types' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::book-copy.book-copy': ApiBookCopyBookCopy;
       'api::book-type.book-type': ApiBookTypeBookType;
+      'api::contact.contact': ApiContactContact;
       'api::test-post.test-post': ApiTestPostTestPost;
       'api::transaction.transaction': ApiTransactionTransaction;
     }

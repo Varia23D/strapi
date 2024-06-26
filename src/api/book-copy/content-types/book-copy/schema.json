@@ -28,6 +28,12 @@
       "relation": "manyToOne",
       "target": "api::book-type.book-type",
       "inversedBy": "copies"
+    },
+    "contacts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::contact.contact",
+      "mappedBy": "book_copy"
     }
   }
 }
