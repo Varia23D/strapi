@@ -1,10 +1,37 @@
+name: Deploy Strapi
+
+on:
+  push:
+    branches:
+      - develop
+
 jobs:
-  my_first_job:
+  deploy:
     runs-on: self-hosted
+
     steps:
-      # This step checks out a copy of your repository.
-      - name: My first step - check out repository
-        uses: actions/checkout@v4
-      # This step references the directory that contains the action.
-      - name: Use local hello-world-action
-        uses: ./.github/actions/hello-world-action
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: Deploy to server
+      run: |
+        ssh -i ~/.ssh/id_rsa root@185.233.187.68    << 'EOF'
+          cd /path/to/your/strapi/project
+          git pull origin develop
+          npm install
+          npm run build
+          pm2 restart strapi
+        EOF
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
