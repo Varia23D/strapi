@@ -1,0 +1,10 @@
+jobs:
+  my_first_job:
+    runs-on: ubuntu-latest
+    steps:
+      # This step checks out a copy of your repository.
+      - name: My first step - check out repository
+        uses: actions/checkout@v4
+      # This step references the directory that contains the action.
+      - name: Use local hello-world-action
+        uses: ./.github/actions/hello-world-action
