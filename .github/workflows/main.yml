@@ -1,4 +1,4 @@
-name: Deploy Strapi
+name: Build and Push Docker Image
 
 on:
   push:
@@ -7,15 +7,12 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-push:
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
 
       - name: Cache Docker layers
         uses: actions/cache@v2
@@ -29,43 +26,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.ref == 'refs/heads/main' && 'latest' || 'develop' }}
         run: |
-          docker buildx build \
-            --cache-from type=local,src=/tmp/.buildx-cache \
-            --cache-to type=local,dest=/tmp/.buildx-cache \
+          docker build \
             --file ./Dockerfile \
-            --tag ${{ secrets.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }} \
-            --push .
-
-
-  deploy:
-    runs-on: self-hosted
-    needs: build
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rsync openssh-client
-
-      - name: Prepare SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-
-      - name: Deploy to server
-        env:
-          DEPLOY_TARGET: ${{ secrets.DEPLOY_TARGET }}
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          COMPOSE_SERVICE: ${{ github.ref == 'refs/heads/main' && secrets.PROD_COMPOSE_SERVICE || secrets.DEV_COMPOSE_SERVICE }}
-          COMPOSE_COMMAND: ${{ github.ref == 'refs/heads/main' && secrets.PROD_COMPOSE_COMMAND || secrets.DEV_COMPOSE_COMMAND }}
-        run: |
-          ssh $DEPLOY_TARGET "cd $DEPLOY_PATH && \
-            $COMPOSE_COMMAND pull $COMPOSE_SERVICE && \
-            $COMPOSE_COMMAND up -d $COMPOSE_SERVICE && \
-            docker image prune -f"
+            --tag "${{ secrets.REGISTRY_IMAGE }}:${IMAGE_TAG}" \
+            --push
