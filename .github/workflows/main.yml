@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - main
 
 jobs:
   build-and-push:
@@ -24,9 +23,9 @@ jobs:
 
       - name: Build and push Docker image
         env:
-          IMAGE_TAG: ${{ github.ref == 'refs/heads/main' && 'latest' || 'develop' }}
+          IMAGE_TAG: 'develop'
         run: |
           docker build \
             --file ./Dockerfile \
-            --tag "${{ secrets.REGISTRY_IMAGE }}:${IMAGE_TAG}" \
+            --tag "strapi:${IMAGE_TAG}" \
             --push
