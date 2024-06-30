@@ -26,19 +26,21 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.REGISTRY_IMAGE }}:${{ github.ref_name == 'main' && 'latest' || 'develop' }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+        env:
+          IMAGE_TAG: ${{ github.ref == 'refs/heads/main' && 'latest' || 'develop' }}
+        run: |
+          docker buildx build \
+            --cache-from type=local,src=/tmp/.buildx-cache \
+            --cache-to type=local,dest=/tmp/.buildx-cache \
+            --file ./Dockerfile \
+            --tag ${{ secrets.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }} \
+            --push .
+
 
   deploy:
     runs-on: self-hosted
     needs: build
-    if: github.ref_name == 'main' || github.ref_name == 'develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
 
     steps:
       - name: Checkout repository
@@ -60,8 +62,8 @@ jobs:
         env:
           DEPLOY_TARGET: ${{ secrets.DEPLOY_TARGET }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          COMPOSE_SERVICE: ${{ github.ref_name == 'main' && secrets.PROD_COMPOSE_SERVICE || secrets.DEV_COMPOSE_SERVICE }}
-          COMPOSE_COMMAND: ${{ github.ref_name == 'main' && secrets.PROD_COMPOSE_COMMAND || secrets.DEV_COMPOSE_COMMAND }}
+          COMPOSE_SERVICE: ${{ github.ref == 'refs/heads/main' && secrets.PROD_COMPOSE_SERVICE || secrets.DEV_COMPOSE_SERVICE }}
+          COMPOSE_COMMAND: ${{ github.ref == 'refs/heads/main' && secrets.PROD_COMPOSE_COMMAND || secrets.DEV_COMPOSE_COMMAND }}
         run: |
           ssh $DEPLOY_TARGET "cd $DEPLOY_PATH && \
             $COMPOSE_COMMAND pull $COMPOSE_SERVICE && \
