@@ -7,7 +7,7 @@ WORKDIR /app
 FROM base AS install
 RUN mkdir -p /temp/dev
 COPY package.json package-lock.json /temp/dev/
-RUN cd /temp/dev && npm ci
+RUN cd /temp/dev && npm i
 
 # install with --production (exclude devDependencies)
 #RUN mkdir -p /temp/prod
