@@ -27,6 +27,9 @@ jobs:
       - name: Log in to Docker Hub with access token
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Check Docker Hub login
+        run: docker info
+
       - name: Build and push Docker image
         env:
           IMAGE_TAG: 'develop'
@@ -34,4 +37,4 @@ jobs:
           docker buildx build \
             --file ./Dockerfile \
             --tag "strapi:develop" \
-            --push . --debug
+            --push .
