@@ -52,3 +52,8 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+      
+      - name: Deploy with Docker Compose
+        run: |
+          docker-compose pull
+          docker-compose up -d --remove-orphans
