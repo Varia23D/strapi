@@ -58,7 +58,7 @@ jobs:
           touch .env
           echo HOST=0.0.0.0 >> .env
           echo PORT=1337 >> .env
-          echo APP_KEYS=${{ APP_KEYS }} >> .env
+          echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
           echo DATABASE_CLIENT=${{ DATABASE_CLIENT }} >> .env
           echo DATABASE_NAME=${{ DATABASE_NAME }} >> .env
           echo DATABASE_PASSWORD=${{ DATABASE_PASSWORD }} >> .env
