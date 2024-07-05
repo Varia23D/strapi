@@ -59,13 +59,13 @@ jobs:
           echo HOST=0.0.0.0 >> .env
           echo PORT=1337 >> .env
           echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
-          echo DATABASE_CLIENT=${{ DATABASE_CLIENT }} >> .env
-          echo DATABASE_NAME=${{ DATABASE_NAME }} >> .env
-          echo DATABASE_PASSWORD=${{ DATABASE_PASSWORD }} >> .env
-          echo DATABASE_PORT=${{ DATABASE_PORT }} >> .env
-          echo DATABASE_USERNAME=${{ DATABASE_USERNAME }} >> .env
-          echo JWT_SECRET=${{ JWT_SECRET }} >> .env
-          echo ADMIN_JWT_SECRET=${{ ADMIN_JWT_SECRET }} >> .env
+          echo DATABASE_CLIENT=${{ secrets.DATABASE_CLIENT }} >> .env
+          echo DATABASE_NAME=${{ secrets.DATABASE_NAME }} >> .env
+          echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} >> .env
+          echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> .env
+          echo DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} >> .env
       
       - name: Deploy with Docker Compose
         run: |
