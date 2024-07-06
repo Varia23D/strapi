@@ -1,4 +1,3 @@
-version: '4'
 services:
   strapi:
     restart: unless-stopped
