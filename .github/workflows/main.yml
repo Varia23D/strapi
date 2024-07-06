@@ -35,6 +35,17 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          
+      - name: Create env file
+        run: |
+          if [ -d ".env" ]; then
+            rm -rf .env
+          fi
+          touch .env
+          echo HOST=0.0.0.0 >> .env
+          echo PORT=1337 >> .env
+          echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
+          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} >> .env
 
       - name: Build and push Docker image
         id: push
@@ -53,16 +64,6 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
-      - name: Create env file
-        run: |
-          if [ -d ".env" ]; then
-            rm -rf .env
-          fi
-          touch .env
-          echo HOST=0.0.0.0 >> .env
-          echo PORT=1337 >> .env
-          echo APP_KEYS=${{ secrets.APP_KEYS }} >> .env
-          echo ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }} >> .env
       
       - name: Deploy with Docker Compose
         run: |
