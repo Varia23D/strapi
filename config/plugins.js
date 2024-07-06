@@ -2,18 +2,10 @@ module.exports = ({ env }) => ({
 	// ...
 	'users-permissions': {
 	  enabled: true,
-    /* 'keycloak': {
-      enabled: true,
-      serverUrl: 'http://localhost:8080/auth',
-      realm: 'strapi-realm',
-      clientId: 'strapi-client',
-      secret: 'your-secret',
-    }, */
-    // ...
     config: {
       providers: {
         keycloak: {
-          issuer: 'http://localhost:8080/realms/strapi-realm',
+          issuer: 'https://localhost:8443/realms/strapi-realm',
           clientId: 'strapi-client',
           clientSecret: env('KEYCLOAK_CLIENT_SECRET'),
           scope: ['openid', 'profile', 'email'],
