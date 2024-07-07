@@ -2,7 +2,7 @@ version: '3.8'
 services:
   strapi:
     restart: unless-stopped
-    image: strapi:latest
+    image: strapi/base
     env_file: .env
     environment:
       DATABASE_CLIENT: sqlite
