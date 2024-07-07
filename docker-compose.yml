@@ -1,16 +1,7 @@
-version: '3.8'
+version: '4'
 services:
   strapi:
-    restart: unless-stopped
-    image: strapi/base
-    env_file: .env
-    environment:
-      DATABASE_CLIENT: sqlite
-      DATABASE_FILENAME: .tmp/data.db
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-      APP_KEYS: ${APP_KEYS}
-      NODE_ENV: ${NODE_ENV}
+    image: strapi/strapi
     volumes:
       - ./app:/srv/app
     ports:
