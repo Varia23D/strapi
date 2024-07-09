@@ -45,6 +45,12 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           echo "TRANSFER_TOKEN_SALT=${{ secrets.TRANSFER_TOKEN_SALT }}" >> .env
           echo "API_TOKEN_SALT=${{ secrets.API_TOKEN_SALT }}" >> .env
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
+          echo "DATABASE_PORT=5432" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
