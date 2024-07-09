@@ -60,7 +60,18 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+  deploy:
+    runs-on: self-hosted
 
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+      
+    needs: build-and-push
+    
+    steps:
       - name: Deploy with Docker Compose
         run: |
           docker-compose down
