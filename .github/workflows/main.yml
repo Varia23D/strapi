@@ -48,6 +48,7 @@ jobs:
 
   push:
     runs-on: self-hosted
+    needs: build
 
     permissions:
       contents: read
@@ -72,10 +73,10 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
     
-    needs: build
     
   deploy:
     runs-on: self-hosted
+    needs: push
 
     permissions:
       contents: read
@@ -89,4 +90,3 @@ jobs:
           docker-compose down
           docker-compose pull
           docker-compose up -d --remove-orphans
-    needs: push
