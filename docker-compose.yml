@@ -1,11 +1,17 @@
 version: '4'
+
 services:
   strapi:
-    image: strapi/strapi
+    image: ghcr.io/Varia23D/strrapi:strapi # Используйте ваш репозиторий и тег
     volumes:
       - ./app:/srv/app
     ports:
       - '1337:1337'
+    env_file:
+      - .env
+    environment:
+      - APP_KEYS=${APP_KEYS}
+      - ADMIN_JWT_SECRET=${ADMIN_JWT_SECRET}
 
     # volumes:
     #   - ./config:/opt/app/config
