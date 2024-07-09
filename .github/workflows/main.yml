@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  build-and-push:
     runs-on: self-hosted
 
     permissions:
@@ -45,18 +45,6 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
           echo "TRANSFER_TOKEN_SALT=${{ secrets.TRANSFER_TOKEN_SALT }}" >> .env
           echo "API_TOKEN_SALT=${{ secrets.API_TOKEN_SALT }}" >> .env
-
-  push:
-    runs-on: self-hosted
-    needs: build
-
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
-
-    steps:
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
@@ -72,19 +60,7 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
-    
-    
-  deploy:
-    runs-on: self-hosted
-    needs: push
 
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
-
-    steps:
       - name: Deploy with Docker Compose
         run: |
           docker-compose down
