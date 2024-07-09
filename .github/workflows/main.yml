@@ -42,6 +42,7 @@ jobs:
           echo "PORT=1337" >> .env
           echo "APP_KEYS=${{ secrets.APP_KEYS }}" >> .env
           echo "ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
       - name: Build and push Docker image
         id: push
