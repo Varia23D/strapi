@@ -83,3 +83,31 @@ jobs:
           docker-compose down
           docker-compose pull
           docker-compose up -d --remove-orphans
+          
+  deploy-to-server:
+    runs-on: self-hosted
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+      
+    needs: build-and-push
+    
+    steps:
+      - name: Load Docker image on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
+          docker load -i ${{ secrets.REMOTE_SERVER_PATH }}/strapi.tar
+          ENDSSH
+
+      - name: Transfer Docker Compose file to remote server
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yaml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}
+
+      - name: Deploy Docker containers using Docker Compose on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} << 'ENDSSH'
+          docker compose -f ${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yaml up -d
+          ENDSSH
