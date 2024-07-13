@@ -107,6 +107,6 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            scp -i ${{ secrets.SSH_PRIVATE_KEY }} $GITHUB_WORKSPACE/docker-compose.yml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:${{ secrets.REMOTE_SERVER_PATH }}/docker-compose.yml
+            scp -i ${{ secrets.SSH_PRIVATE_KEY }} strapi/docker-compose.yml ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}:/home/kirill/appdocker-compose.yml
             ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }} "cd /home/kirill/app && docker-compose down && docker-compose pull && docker-compose up -d --remove-orphans"
       
