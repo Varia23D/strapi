@@ -1,0 +1,130 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - develop
+      - test-main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    # if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/test-main'
+    runs-on: self-hosted
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          
+      - name: Create env file
+        run: |
+          echo "HOST=0.0.0.0" > .env
+          echo "PORT=1337" >> .env
+          echo "APP_KEYS=${{ secrets.APP_KEYS }}" >> .env
+          echo "ADMIN_JWT_SECRET=${{ secrets.ADMIN_JWT_SECRET }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "TRANSFER_TOKEN_SALT=${{ secrets.TRANSFER_TOKEN_SALT }}" >> .env
+          echo "API_TOKEN_SALT=${{ secrets.API_TOKEN_SALT }}" >> .env
+          echo "DATABASE_HOST=postgres" >> .env
+          echo "DATABASE_PORT=5432" >> .env
+          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+          echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+          
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+  deploy-dev:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: self-hosted
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+      
+    needs: build-and-push
+    
+    steps:
+      - name: Deploy with Docker Compose
+        run: |
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d --remove-orphans
+          
+  deploy-prod:
+    if: github.ref == 'refs/heads/test-main'
+    runs-on: self-hosted
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    needs: build-and-push
+    
+    steps:
+      # - name: Copy .env file to remote server
+      #   run: |
+      #     scp .env user@remote-server:"${{ secrets.REMOTE_SERVER_PATH }}/.env"
+      - name: copy compose-file
+        uses: appleboy/scp-action@v0.1.7
+        with: 
+          host: ${{ secrets.REMOTE_SERVER_ADDRESS }}
+          username: ${{ secrets.REMOTE_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./docker-compose.yml"
+          target: "/home/kirill/app/"
+          
+      - name: SSH deploy to remote server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_SERVER_ADDRESS }}
+          username: ${{ secrets.REMOTE_SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}
+            cd /home/kirill/app
+            echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
+            echo "DATABASE_USER=${{ secrets.DATABASE_USERNAME }}" >> .env
+            echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
+            docker-compose down
+            docker-compose pull
+            docker-compose --env-file .env up -d
+      
