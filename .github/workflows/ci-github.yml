@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - test-main
 
 env:
   REGISTRY: ghcr.io
@@ -11,6 +12,7 @@ env:
 
 jobs:
   build-and-push:
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/test-main'
     runs-on: self-hosted
 
     permissions:
@@ -67,6 +69,7 @@ jobs:
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
   deploy-dev:
+    if: github.ref == 'refs/heads/develop'
     runs-on: self-hosted
 
     permissions:
@@ -85,6 +88,7 @@ jobs:
           docker-compose up -d --remove-orphans
           
   deploy-prod:
+    if: github.ref == 'refs/heads/test-main'
     runs-on: self-hosted
 
     permissions:
