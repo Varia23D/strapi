@@ -107,7 +107,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            scp -i $SSH_PRIVATE_KEY docker-compose.yml $REMOTE_SERVER_USERNAME@$REMOTE_SERVER_ADDRESS:$REMOTE_SERVER_PATH/docker-compose.yml
+            scp -i $SSH_PRIVATE_KEY $GITHUB_WORKSPACE/docker-compose.yml $REMOTE_SERVER_USERNAME@$REMOTE_SERVER_ADDRESS:$REMOTE_SERVER_PATH/docker-compose.yml
             cd /home/kirill/app
             docker-compose down
             docker-compose pull
