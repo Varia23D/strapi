@@ -96,9 +96,9 @@ jobs:
     needs: build-and-push
     
     steps:
-      - name: Copy .env file to remote server
-        run: |
-          scp .env user@remote-server:"${{ secrets.REMOTE_SERVER_PATH }}/.env"
+      # - name: Copy .env file to remote server
+      #   run: |
+      #     scp .env user@remote-server:"${{ secrets.REMOTE_SERVER_PATH }}/.env"
       
       - name: SSH deploy to remote server
         uses: appleboy/ssh-action@master
