@@ -107,7 +107,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /path/to/remote
+            cd /home/kirill/app
             docker-compose down
             docker-compose pull
             docker-compose up -d --remove-orphans
