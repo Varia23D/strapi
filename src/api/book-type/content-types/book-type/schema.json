@@ -16,19 +16,7 @@
       "type": "string"
     },
     "description": {
-      "type": "string"
-    },
-    "copies": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::book-copy.book-copy",
-      "mappedBy": "book_type"
-    },
-    "copies": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::book-copy.book-copy",
-      "mappedBy": "book_type"
+      "type": "text"
     },
     "copies": {
       "type": "relation",
@@ -37,9 +25,6 @@
       "mappedBy": "book_type"
     },
     "cover": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
       "type": "media",
       "multiple": true,
       "required": false,
@@ -52,6 +37,21 @@
     },
     "loanPeriod": {
       "type": "decimal"
+    },
+    "ISBN": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "year": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "string"
+    },
+    "lang": {
+      "type": "string"
     }
   }
 }
