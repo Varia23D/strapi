@@ -70,12 +70,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "test_posts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::test-post.test-post",
-      "mappedBy": "user"
-    },
     "transactions": {
       "type": "relation",
       "relation": "oneToMany",
