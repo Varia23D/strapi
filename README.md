@@ -29,7 +29,7 @@ Strapi is a powerfull tool, that helps to provide API from database in an easies
 Based on headless concept strapi connects database to ANY front-end via its API from the box.
 The closest analog was Django or FastAPI. I chose Strapi since I worked with it on my workplace a lot.
 
-![strapi concept](./doc/strapi-concept.png.png)
+![strapi concept](./doc/strapi-concept.png)
 
 It also provides a nice and flexible admin pannel from the box, so we didn't have to build it ourselves.
 
