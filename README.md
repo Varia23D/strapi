@@ -3,7 +3,7 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Strapi-4.25.3-gray?style=for-the-badge&logo=strapi&logoColor=white&labelColor=4945ff" alt="Strapi">
+  <img src="https://img.shields.io/badge/Strapi-4.25.3-gray?style=for-the-badge&logo=strapi&logoColor=white&labelColor=555555&color=4945ff" alt="Strapi">
   <img src="https://img.shields.io/badge/NodeJS-20.15.1-gray?style=for-the-badge&logo=nodedotjs&logoColor=white&labelColor=555555&color=97c900" alt="Nodejs">
   <img src="https://img.shields.io/badge/PostgreSQL-16.3-gray?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=555555&color=4169E1" alt="PostgreSQL">
   <img src="https://img.shields.io/badge/Docker-25-gray?style=for-the-badge&logo=docker&logoColor=white&labelColor=555555&color=2496ED" alt="Docker">
