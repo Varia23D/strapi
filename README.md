@@ -10,7 +10,7 @@
 </div>
 
 
-## A step-by-step guide obout why we chose it and how to operate it 
+## A step-by-step guide about why we chose it and how to operate it 
 <!-- <details> -->
   <!-- <summary>Содержание</summary> -->
   <ol>
@@ -24,6 +24,15 @@
 
 ## Concept
 <a name="concept"></a>
+
+Strapi is a powerfull tool, that helps to provide API from database in an easiest way, making a lot of opportunity to operate with data.
+Based on headless concept strapi connects database to ANY front-end via its API from the box.
+The closest analog was Django or FastAPI. I chose Strapi since I worked with it on my workplace a lot.
+
+![strapi concept](./doc/strapi-concept.png.png)
+
+It also provides a nice and flexible admin pannel from the box, so we didn't have to build it ourselves.
+
 
 * клонировать репозиторий 
 * убедиться, что `wp-cli.phar` в корневом каталоге, если нет скачать <a href="https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar">отсюда</a> или <a href="https://wp-cli.org/">с сайта</a>
