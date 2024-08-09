@@ -724,11 +724,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    test_posts: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::test-post.test-post'
-    >;
     transactions: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -857,7 +852,7 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    description: Attribute.String;
+    description: Attribute.Text;
     copies: Attribute.Relation<
       'api::book-type.book-type',
       'oneToMany',
@@ -865,6 +860,11 @@ export interface ApiBookTypeBookType extends Schema.CollectionType {
     >;
     cover: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
     loanPeriod: Attribute.Decimal;
+    ISBN: Attribute.String;
+    author: Attribute.String;
+    year: Attribute.String;
+    pages: Attribute.String;
+    lang: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -915,44 +915,6 @@ export interface ApiContactContact extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::contact.contact',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTestPostTestPost extends Schema.CollectionType {
-  collectionName: 'test_posts';
-  info: {
-    singularName: 'test-post';
-    pluralName: 'test-posts';
-    displayName: 'TestPost';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String;
-    description: Attribute.String;
-    user: Attribute.Relation<
-      'api::test-post.test-post',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    loanDate: Attribute.Date;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::test-post.test-post',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::test-post.test-post',
       'oneToOne',
       'admin::user'
     > &
@@ -1023,7 +985,6 @@ declare module '@strapi/types' {
       'api::book-copy.book-copy': ApiBookCopyBookCopy;
       'api::book-type.book-type': ApiBookTypeBookType;
       'api::contact.contact': ApiContactContact;
-      'api::test-post.test-post': ApiTestPostTestPost;
       'api::transaction.transaction': ApiTransactionTransaction;
     }
   }

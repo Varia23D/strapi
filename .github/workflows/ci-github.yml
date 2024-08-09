@@ -110,7 +110,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "./docker-compose.yml"
-          target: "/home/kirill/app/"
+          target: "/home/debian/app/"
           
       - name: SSH deploy to remote server
         uses: appleboy/ssh-action@v1.0.3
@@ -120,7 +120,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}
-            cd /home/kirill/app
+            cd /home/debian/app
             echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
             echo "DATABASE_USER=${{ secrets.DATABASE_USERNAME }}" >> .env
             echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> .env
