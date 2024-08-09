@@ -119,7 +119,8 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}
+            # ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}
+            ssh ${{ secrets.REMOTE_SERVER_USERNAME }}@${{ secrets.REMOTE_SERVER_ADDRESS }}
             cd /home/debian/app
             echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> .env
             echo "DATABASE_USER=${{ secrets.DATABASE_USERNAME }}" >> .env
